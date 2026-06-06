@@ -14,20 +14,20 @@
 Built an explainable AI system for financial market forecasting using a Transformer-based time-series model (PatchTST), Retrieval-Augmented Generation (RAG), vector embeddings, and Llama 3.3. The system forecasts gold prices, detects prediction anomalies, and generates contextual explanations using real-time news and domain-specific financial knowledge retrieved from a vector database.
 
 **Tech Stack:**
-PatchTST • Transformers • RAG • ChromaDB • HuggingFace Embeddings • Llama 3.3 • Groq • NewsAPI • Time-Series Forecasting • Explainable AI
+PatchTST , Transformers , RAG , ChromaDB , HuggingFace Embeddings , Llama 3.3 , Groq , NewsAPI , Time-Series Forecasting , Explainable AI
 
 
 ---
 
 ## What does this do?
 
-This is a CLI tool that forecasts gold futures (`GC=F`) prices using a transformer-based time series model. When the model is wrong, it doesn't just report the error — it explains *why* using real news from that day and theory pulled from technical analysis books.
+This is a CLI tool that forecasts gold futures (`GC=F`) prices using a transformer-based time series model. When the model is wrong, it doesn't just report the error - it explains *why* using real news from that day and theory pulled from technical analysis books.
 
 Three modes:
 
-1. **Direct Forecast** — train on recent history, predict the next N days
-2. **30-Day Anomaly Analysis** — look back at the last 30 days, find where the model failed, explain each failure
-3. **Holdout Backtest** — simulate a past forecast, measure out-of-sample accuracy
+1. **Direct Forecast** - train on recent history, predict the next N days
+2. **30-Day Anomaly Analysis** - look back at the last 30 days, find where the model failed, explain each failure
+3. **Holdout Backtest** - simulate a past forecast, measure out-of-sample accuracy
 
 ---
 
@@ -40,7 +40,7 @@ Yahoo Finance (GC=F)
        ↓
   Anomaly Detection (error_pct > 3%)
        ↓
-  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  ←──  RAG (ChromaDB + HuggingFace)
+  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
                        ↓
               Explanation printed to CLI
 ```
@@ -91,34 +91,34 @@ patch_len (e.g. 16): 16
 Simulates a real out-of-sample forecast at a point in the past.
 
 ```
-offset from end (e.g. 500): 1000    ← go back 1000 days from today (split point)
-train points (e.g. 3000): 3000      ← use 3000 days before the split to train
-horizon (e.g. 90): 30               ← forecast 30 days after the split
-input size (e.g. 60): 60            ← model looks at last 60 days to predict
-n_heads (e.g. 4): 4                 ← parallel attention heads in transformer
-patch_len (e.g. 16): 16             ← time series is chunked into 16-day patches
+offset from end (e.g. 500): 1000    <-- go back 1000 days from today (split point)
+train points (e.g. 3000): 3000      <-- use 3000 days before the split to train
+horizon (e.g. 90): 30               <-- forecast 30 days after the split
+input size (e.g. 60): 60            <-- model looks at last 60 days to predict
+n_heads (e.g. 4): 4                 <-- parallel attention heads in transformer
+patch_len (e.g. 16): 16             <-- time series is chunked into 16-day patches
 ```
 
 **Parameter guide:**
-- `offset_back` — sets where the test period starts. 1000 means "my test set begins 1000 days ago"
-- `train_points` — how many days before the split point are used for training
-- `horizon` — how many days after the split to forecast
-- `input_size` — how many past days the model sees when making each prediction
-- `n_heads` — how many attention perspectives the transformer uses simultaneously
-- `patch_len` — the model processes the series in chunks of this many days
+- `offset_back` - sets where the test period starts. 1000 means "my test set begins 1000 days ago"
+- `train_points` - how many days before the split point are used for training
+- `horizon` - how many days after the split to forecast
+- `input_size` - how many past days the model sees when making each prediction
+- `n_heads` - how many attention perspectives the transformer uses simultaneously
+- `patch_len` - the model processes the series in chunks of this many days
 
 ---
 
-## Model — PatchTST
+## Model - PatchTST
 
 PatchTST (Patch Time Series Transformer) divides the time series into fixed-length patches and applies self-attention across them. This is more efficient than point-by-point attention and captures local temporal patterns better.
 
 Key parameters:
-- `h` — forecast horizon
-- `input_size` — lookback window
-- `max_steps` — training steps (set to 50 by default)
-- `n_heads` — number of attention heads
-- `patch_len` — patch size
+- `h` - forecast horizon
+- `input_size` - lookback window
+- `max_steps` - training steps (set to 50 by default)
+- `n_heads` - number of attention heads
+- `patch_len` - patch size
 
 ---
 
@@ -134,13 +134,13 @@ inflation dollar correlation technical breakout price $X deviation Y%
 ...retrieves the 3 most relevant passages and injects them into the LLM prompt alongside the news.
 
 Books used:
-- Murphy — Technical Analysis of the Financial Markets
-- Nison — Japanese Candlestick Charting Techniques
-- Weldon — Gold Trading Boot Camp
-- Pring — Study Guide for Technical Analysis Explained
-- Johnson — The Complete Guide to Investing in Gold and Silver
-- Vince — The Handbook of Portfolio Mathematics
-- Jin et al. — Technical Analysis in Foreign Exchange Markets (2020)
+- Murphy - Technical Analysis of the Financial Markets
+- Nison - Japanese Candlestick Charting Techniques
+- Weldon - Gold Trading Boot Camp
+- Pring - Study Guide for Technical Analysis Explained
+- Johnson - The Complete Guide to Investing in Gold and Silver
+- Vince - The Handbook of Portfolio Mathematics
+- Jin et al. - Technical Analysis in Foreign Exchange Markets (2020)
 
 ---
 
@@ -149,8 +149,8 @@ Books used:
 | | Backtest | Anomaly Analysis | Direct Forecast |
 |---|---|---|---|
 | Anomaly detection | no | yes | no |
-| LLM role | — | why did it fail? | what could go wrong? |
-| RAG role | — | historical theory | historical + current |
+| LLM role | - | why did it fail? | what could go wrong? |
+| RAG role | - | historical theory | historical + current |
 | Value | accuracy measurement | transparency, learning | decision support |
 
 ---
@@ -198,42 +198,42 @@ Educational and research use only. Not financial advice.
 
 ## Screenshots
 
-### Holdout Backtest — CLI Input
+### Holdout Backtest - CLI Input
 Parameters used for the backtest run shown below.
 
 ![Backtest CLI](assets/backtest.png)
 
-### Holdout Backtest — Result
+### Holdout Backtest - Result
 Model trained on 3000 points, forecasting 30 days out-of-sample. RMSE=55.96.
 
 ![Backtest Result](assets/backtest1.png)
 
-### 30-Day Anomaly Analysis — CLI Input
+### 30-Day Anomaly Analysis - CLI Input
 Parameters used for the anomaly analysis run shown below.
 
 ![Anomaly CLI](assets/30anomaly3.png)
 
-### 30-Day Anomaly Analysis — Result
+### 30-Day Anomaly Analysis - Result
 Actual vs predicted prices over the last 30 days. Red dashed lines mark anomaly events where model error exceeded 3%.
 
 ![Anomaly Graph](assets/30anomaly.png)
 
-### 30-Day Anomaly Analysis — LLM Explanation
+### 30-Day Anomaly Analysis - LLM Explanation
 For each flagged anomaly, the system retrieves that day's news headlines and relevant passages from technical analysis books, then generates a structured explanation via Llama 3.3.
 
 ![LLM Explanation](assets/30anomaly2.png)
 
-### Direct Forecast — CLI Input
+### Direct Forecast - CLI Input
 Parameters used for the direct forecast run shown below.
 
 ![Forecast CLI](assets/direct-forecast.png)
 
-### Direct Forecast — Result
+### Direct Forecast - Result
 30-day future forecast from today. Orange dashed line marks the prediction start point.
 
 ![Forecast Graph](assets/direct-forecast2.png)
 
-### Direct Forecast — Risk Analysis
+### Direct Forecast - Risk Analysis
 After generating the forecast, the system queries recent news and book theory to identify risks that could invalidate the prediction.
 
 ![Risk Analysis](assets/direct-forecast3.png)
@@ -246,19 +246,19 @@ After generating the forecast, the system queries recent news and book theory to
 Transformer tabanlı zaman serisi modeli (PatchTST), Retrieval-Augmented Generation (RAG), vektör veritabanı (ChromaDB), gerçek zamanlı haber entegrasyonu ve büyük dil modeli (Llama 3.3) bir araya getirilerek altın piyasası tahminlerini ve tahmin hatalarını açıklayan bir finansal yapay zeka sistemi.
 
 **Tech Stack:**
-PatchTST • Transformers • RAG • ChromaDB • HuggingFace Embeddings • Llama 3.3 • Groq • NewsAPI • Time-Series Forecasting • Explainable AI
+PatchTST , Transformers , RAG , ChromaDB , HuggingFace Embeddings , Llama 3.3 , Groq , NewsAPI , Time-Series Forecasting , Explainable AI
 
 ---
 
 ## Ne yapıyor?
 
-Bu araç, altın vadeli işlem sözleşmelerinin (`GC=F`) fiyatını transformer tabanlı bir zaman serisi modeliyle tahmin eden bir CLI uygulamasıdır. Model yanıldığında sadece hatayı raporlamakla kalmaz — o günün gerçek haberleri ve teknik analiz kitaplarından çekilen teorilerle *neden* yanıldığını açıklar.
+Bu araç, altın vadeli işlem sözleşmelerinin (`GC=F`) fiyatını transformer tabanlı bir zaman serisi modeliyle tahmin eden bir CLI uygulamasıdır. Model yanıldığında sadece hatayı raporlamakla kalmaz - o günün gerçek haberleri ve teknik analiz kitaplarından çekilen teorilerle *neden* yanıldığını açıklar.
 
 Üç mod:
 
-1. **Direct Forecast** — son N güne bakarak gelecekteki H günü tahmin et
-2. **30-Day Anomaly Analysis** — son 30 günde modelin nerede yanıldığını bul, her hatayı açıkla
-3. **Holdout Backtest** — geçmişte belirli bir noktada tahmin simülasyonu yap, doğruluğu ölç
+1. **Direct Forecast** - son N güne bakarak gelecekteki H günü tahmin et
+2. **30-Day Anomaly Analysis** - son 30 günde modelin nerede yanıldığını bul, her hatayı açıkla
+3. **Holdout Backtest** - geçmişte belirli bir noktada tahmin simülasyonu yap, doğruluğu ölç
 
 ---
 
@@ -271,7 +271,7 @@ Yahoo Finance (GC=F)
        ↓
   Anomali Tespiti (error_pct > %3)
        ↓
-  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  ←──  RAG (ChromaDB + HuggingFace)
+  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
                        ↓
               Açıklama CLI'a yazdırılır
 ```
@@ -315,34 +315,34 @@ Her anomali olayı için:
 Geçmişte belirli bir noktada gerçek dışı örneklem tahmini simüle eder.
 
 ```
-offset from end (e.g. 500): 1000    ← bugünden 1000 gün geriye git (ayrım noktası)
-train points (e.g. 3000): 3000      ← ayrım noktasından önceki 3000 günü eğitimde kullan
-horizon (e.g. 90): 30               ← ayrımdan itibaren 30 gün ileriye tahmin et
-input size (e.g. 60): 60            ← model her tahmin için son 60 güne bakar
-n_heads (e.g. 4): 4                 ← transformer kaç farklı açıdan veriye baksın
-patch_len (e.g. 16): 16             ← zaman serisi 16 günlük parçalara bölünür
+offset from end (e.g. 500): 1000    <- bugünden 1000 gün geriye git (ayrım noktası)
+train points (e.g. 3000): 3000      <-- ayrım noktasından önceki 3000 günü eğitimde kullan
+horizon (e.g. 90): 30               <-- ayrımdan itibaren 30 gün ileriye tahmin et
+input size (e.g. 60): 60            <- model her tahmin için son 60 güne bakar
+n_heads (e.g. 4): 4                 <- transformer kaç farklı açıdan veriye baksın
+patch_len (e.g. 16): 16             <-- zaman serisi 16 günlük parçalara bölünür
 ```
 
 **Parametre rehberi:**
-- `offset_back` — test setinin nerede başladığını belirler. 1000 → "test setim 1000 gün önce başlasın"
-- `train_points` — ayrım noktasından önceki kaç günün eğitimde kullanılacağı
-- `horizon` — ayrımdan sonra kaç günün tahmin edileceği
-- `input_size` — her tahminde modelin kaç geçmiş güne baktığı
-- `n_heads` — transformer'ın aynı anda kaç farklı attention perspektifi kullandığı
-- `patch_len` — zaman serisinin kaç günlük parçalar halinde işlendiği
+- `offset_back` - test setinin nerede başladığını belirler. 1000 → "test setim 1000 gün önce başlasın"
+- `train_points` - ayrım noktasından önceki kaç günün eğitimde kullanılacağı
+- `horizon` - ayrımdan sonra kaç günün tahmin edileceği
+- `input_size` - her tahminde modelin kaç geçmiş güne baktığı
+- `n_heads` - transformer'ın aynı anda kaç farklı attention perspektifi kullandığı
+- `patch_len` - zaman serisinin kaç günlük parçalar halinde işlendiği
 
 ---
 
-## Model — PatchTST
+## Model - PatchTST
 
 PatchTST (Patch Time Series Transformer), zaman serisini sabit uzunluklu parçalara böler ve bu parçalar arasında self-attention uygular. Nokta nokta attention'dan daha verimlidir ve yerel zamansal örüntüleri daha iyi yakalar.
 
 Temel parametreler:
-- `h` — tahmin ufku
-- `input_size` — geriye bakış penceresi
-- `max_steps` — eğitim adımı sayısı (varsayılan 50)
-- `n_heads` — attention kafa sayısı
-- `patch_len` — parça boyutu
+- `h` - tahmin ufku
+- `input_size` - geriye bakış penceresi
+- `max_steps` - eğitim adımı sayısı (varsayılan 50)
+- `n_heads` - attention kafa sayısı
+- `patch_len` - parça boyutu
 
 ---
 
@@ -358,13 +358,13 @@ inflation dollar correlation technical breakout price $X deviation Y%
 ...en ilgili 3 pasajı getirir ve bunlar haber başlıklarıyla birlikte LLM promptuna eklenir.
 
 Kullanılan kitaplar:
-- Murphy — Technical Analysis of the Financial Markets
-- Nison — Japanese Candlestick Charting Techniques
-- Weldon — Gold Trading Boot Camp
-- Pring — Study Guide for Technical Analysis Explained
-- Johnson — The Complete Guide to Investing in Gold and Silver
-- Vince — The Handbook of Portfolio Mathematics
-- Jin ve ark. — Technical Analysis in Foreign Exchange Markets (2020)
+- Murphy - Technical Analysis of the Financial Markets
+- Nison - Japanese Candlestick Charting Techniques
+- Weldon - Gold Trading Boot Camp
+- Pring - Study Guide for Technical Analysis Explained
+- Johnson - The Complete Guide to Investing in Gold and Silver
+- Vince - The Handbook of Portfolio Mathematics
+- Jin ve ark. - Technical Analysis in Foreign Exchange Markets (2020)
 
 ---
 
@@ -373,8 +373,8 @@ Kullanılan kitaplar:
 | | Backtest | Anomali Analizi | Direct Forecast |
 |---|---|---|---|
 | Anomali tespiti | yok | var | yok |
-| LLM rolü | — | neden yanıldı? | ne bozabilir? |
-| RAG rolü | — | geçmiş teori | geçmiş + güncel |
+| LLM rolü | - | neden yanıldı? | ne bozabilir? |
+| RAG rolü | - | geçmiş teori | geçmiş + güncel |
 | Değer | doğruluk ölçümü | şeffaflık, öğrenme | karar desteği |
 
 ---
@@ -422,42 +422,42 @@ Yalnızca eğitim ve araştırma amaçlıdır. Finansal tavsiye değildir.
 
 ## Ekran Görüntüleri
 
-### Holdout Backtest — CLI Girişi
+### Holdout Backtest - CLI Girişi
 Aşağıdaki backtest çalıştırması için kullanılan parametreler.
 
 ![Backtest CLI](assets/backtest.png)
 
-### Holdout Backtest — Sonuç
+### Holdout Backtest - Sonuç
 3000 nokta üzerinde eğitim, 30 gün dışı örneklem tahmini. RMSE=55.96.
 
 ![Backtest Sonuç](assets/backtest1.png)
 
-### 30-Day Anomaly Analysis — CLI Girişi
+### 30-Day Anomaly Analysis - CLI Girişi
 Aşağıdaki anomali analizi için kullanılan parametreler.
 
 ![Anomali CLI](assets/30anomaly3.png)
 
-### 30-Day Anomaly Analysis — Sonuç
+### 30-Day Anomaly Analysis - Sonuç
 Son 30 günde gerçek vs tahmin fiyatları. Kırmızı kesik çizgiler, model hatasının %3'ü aştığı anomali günlerini gösterir.
 
 ![Anomali Grafiği](assets/30anomaly.png)
 
-### 30-Day Anomaly Analysis — LLM Açıklaması
+### 30-Day Anomaly Analysis - LLM Açıklaması
 Her anomali olayı için sistem o günün haberlerini ve teknik analiz kitaplarından ilgili pasajları getirir, Llama 3.3 aracılığıyla yapılandırılmış bir açıklama üretir.
 
 ![LLM Açıklama](assets/30anomaly2.png)
 
-### Direct Forecast — CLI Girişi
+### Direct Forecast - CLI Girişi
 Aşağıdaki tahmin çalıştırması için kullanılan parametreler.
 
 ![Forecast CLI](assets/direct-forecast.png)
 
-### Direct Forecast — Sonuç
+### Direct Forecast - Sonuç
 Bugünden itibaren 30 günlük tahmin. Turuncu kesik çizgi tahmin başlangıç noktasını gösterir.
 
 ![Forecast Grafiği](assets/direct-forecast2.png)
 
-### Direct Forecast — Risk Analizi
+### Direct Forecast - Risk Analizi
 Tahmin üretildikten sonra sistem güncel haberleri ve kitap teorisini sorgulayarak tahmini geçersiz kılabilecek riskleri tespit eder.
 
 ![Risk Analizi](assets/direct-forecast3.png)
