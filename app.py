@@ -110,7 +110,7 @@ while True:
 
             train_df = df.tail(train_points).reset_index(drop=True)
             model = NeuralForecast(
-                models=[PatchTST(h=horizon, input_size=input_size, max_steps=50,
+                models=[PatchTST(h=horizon, input_size=input_size, max_steps=500,
                                  n_heads=n_heads, patch_len=patch_len)],
                 freq="B"
             )
@@ -170,7 +170,7 @@ What are the main risks that could invalidate this forecast?
             train_df = df.iloc[max(0, split_idx - train_points):split_idx].reset_index(drop=True)
 
             model = NeuralForecast(
-                models=[PatchTST(h=len(actual), input_size=input_size, max_steps=50,
+                models=[PatchTST(h=len(actual), input_size=input_size, max_steps=500,
                                  n_heads=n_heads, patch_len=patch_len)],
                 freq="B"
             )
@@ -183,7 +183,7 @@ What are the main risks that could invalidate this forecast?
             result["deviation_pct"] = abs(result["actual"] - result["rolling_mean"]) / result["rolling_mean"] * 100
             result["error"] = abs(result["actual"] - result["PatchTST"])
             result["error_pct"] = result["error"] / result["actual"] * 100
-            result["is_anomaly"] = result["error_pct"] > 3
+            result["is_anomaly"] = result["error_pct"] > 1.5
             result["anomaly_group"] = (result["is_anomaly"] != result["is_anomaly"].shift()).cumsum()
             anomaly_events = result[result["is_anomaly"]].groupby("anomaly_group").first().reset_index(drop=True)
 
@@ -238,7 +238,7 @@ Why did this anomaly occur?
             actual_df = df.iloc[split_idx:split_idx + horizon].reset_index(drop=True)
 
             model = NeuralForecast(
-                models=[PatchTST(h=horizon, input_size=input_size, max_steps=50,
+                models=[PatchTST(h=horizon, input_size=input_size, max_steps=500,
                                  n_heads=n_heads, patch_len=patch_len)],
                 freq="B"
             )
