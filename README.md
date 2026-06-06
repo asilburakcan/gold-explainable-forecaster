@@ -40,7 +40,7 @@ Yahoo Finance (GC=F)
        ↓
   Anomaly Detection (error_pct > 3%)
        ↓
-  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
+  NewsAPI  -->  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
                        ↓
               Explanation printed to CLI
 ```
@@ -91,12 +91,12 @@ patch_len (e.g. 16): 16
 Simulates a real out-of-sample forecast at a point in the past.
 
 ```
-offset from end (e.g. 500): 1000    <-- go back 1000 days from today (split point)
+offset from end (e.g. 500): 1000    <- go back 1000 days from today (split point)
 train points (e.g. 3000): 3000      <-- use 3000 days before the split to train
 horizon (e.g. 90): 30               <-- forecast 30 days after the split
-input size (e.g. 60): 60            <-- model looks at last 60 days to predict
+input size (e.g. 60): 60            <- model looks at last 60 days to predict
 n_heads (e.g. 4): 4                 <-- parallel attention heads in transformer
-patch_len (e.g. 16): 16             <-- time series is chunked into 16-day patches
+patch_len (e.g. 16): 16             <- time series is chunked into 16-day patches
 ```
 
 **Parameter guide:**
@@ -271,7 +271,7 @@ Yahoo Finance (GC=F)
        ↓
   Anomali Tespiti (error_pct > %3)
        ↓
-  NewsAPI  ──→  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
+  NewsAPI  -->  Groq LLM (Llama 3.3-70b)  <--──  RAG (ChromaDB + HuggingFace)
                        ↓
               Açıklama CLI'a yazdırılır
 ```
